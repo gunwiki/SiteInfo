@@ -18,7 +18,6 @@
 		<![endif]-->
 		<script>
 			function start(){
-				text = "<tr>";
 				URL = "https://huoqibaike.club/info/api.php?action=viewcount";
 				obj = $.ajax({url:URL,async:false});
 				a = obj.responseText;
@@ -31,10 +30,7 @@
 				keyss = keys.split(',');
 				valuess = values.split(',');
 				for(j = 0; j < keyss.length; j++) {
-   					text = text +  "<td>" + keyss[j] + "</td><td>" + valuess[j].toString() + "</td>";
-   					if (j = keyss.length){
-   						text = text + "</tr>"
-   					}
+   					text = text +  "<tr><td>" + keyss[j] + "</td><td>" + valuess[j].toString() + "</td></tr>";
    					document.getElementById("forjs").innerHTML=text;
    				}
 				var d = setTimeout("start()",1000);
