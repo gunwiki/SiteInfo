@@ -16,6 +16,40 @@
 			<script src="//cdn.staticfile.org/jquery/1.9.1/jquery.min.js"></script>
 			<script src="//cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
 		<![endif]-->
+		<script>
+			function start(){
+				URL = "https://huoqibaike.club/info/api.php?action=viewcount";
+				obj = $.ajax({url:URL,async:false});
+				a = obj.responseText;
+				b = JSON.parse(a);
+				c = b.ViewCount;
+				key = getKeys(c);
+				value = getValues(c);
+				keys = key.toString();
+				values = value.toString();
+				keyss = keys.split(',');
+				valuess = values.split(',');
+				for(j in keyss) {
+   					document.getElementById("forjs").innerHTML+="<tr><td>" + keyss[j] + "</td><td>" + valuess[j].toString() + "</td></tr>";
+   				}
+			}
+			function getKeys(object){
+				var keys = [];
+				for (var property in object){
+					keys.push(property);
+				}
+				return keys;
+			}
+			function getValues(object){
+				var values = [];
+				for (var property in object){
+					values.push(object[property]);
+				}
+				return values;
+			}
+			console.log("前端没几把技术。");
+			start();
+		</script>
 	</head>
 	<body>
 		<div class="container">
@@ -41,41 +75,5 @@
 				</div>
 			</div>
 		</div>
-		<script>
-			function start(){
-				URL = "https://huoqibaike.club/info/api.php?action=viewcount";
-				obj = $.ajax({url:URL,async:false});
-				a = obj.responseText;
-				b = JSON.parse(a);
-				c = b.ViewCount;
-				key = getKeys(c);
-				value = getValues(c);
-				keys = key.toString();
-				values = value.toString();
-				keyss = keys.split(',');
-				valuess = values.split(',');
-				for(j = 0; j < keyss.length; j++) {
-   					text = text +  "<tr><td>" + keyss[j] + "</td><td>" + valuess[j].toString() + "</td></tr>";
-   					document.getElementById("forjs").innerHTML=text;
-   				}
-				var d = setTimeout("start()",1000);
-			}
-			function getKeys(object){
-				var keys = [];
-				for (var property in object){
-					keys.push(property);
-				}
-				return keys;
-			}
-			function getValues(object){
-				var values = [];
-				for (var property in object){
-					values.push(object[property]);
-				}
-				return values;
-			}
-			console.log("前端没几把技术。");
-			start();
-		</script>
 	</body>
 </html>
