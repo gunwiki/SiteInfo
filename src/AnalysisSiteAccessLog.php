@@ -43,13 +43,7 @@ class AnalysisSiteAccessLog
                 $this->hit($hit, $date);
             }
         }
-
-        echo "----------------------\n";
-        echo "|  Date  | Count |\n";
-        foreach ($hit as $date => $count) {
-            echo "|  $date  | $count |\n";
-        }
-        echo "----------------------\n";
+        return $hit;
     }
 
     private function matchURL(string $url) : bool
