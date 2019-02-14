@@ -16,6 +16,31 @@
 			<script src="//cdn.staticfile.org/jquery/1.9.1/jquery.min.js"></script>
 			<script src="//cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
 		<![endif]-->
+	</head>
+	<body>
+		<div class="container">
+			<div class="card bg-primary text-white">
+				<div class="card-header">
+					WebInfo
+				</div>
+				<div class="card-body">
+					<table class="table table-bordered table-hover table-condensed">
+						<thead>
+							<tr>
+								<th>
+									Time
+								</th>
+								<th>
+									Counts
+								</th>
+							</tr>
+						</thead>
+						<tbody id="forjs">
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
 		<script>
 			function start(){
 				URL = "https://huoqibaike.club/info/api.php?action=viewcount";
@@ -52,30 +77,5 @@
 			console.log("前端没几把技术。");
 			start();
 		</script>
-	</head>
-	<body>
-		<div class="container">
-			<div class="card bg-primary text-white">
-				<div class="card-header">
-					WebInfo
-				</div>
-				<div class="card-body">
-					<table class="table table-bordered table-hover table-condensed">
-						<thead>
-							<tr>
-								<th>
-									Time
-								</th>
-								<th>
-									Counts
-								</th>
-							</tr>
-						</thead>
-						<tbody id="forjs">
-						</tbody>
-					</table>
-				</div>
-			</div>
-		</div>
 	</body>
 </html>
