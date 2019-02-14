@@ -12,6 +12,7 @@ if (isset($_GET['action'])) {
     switch ($_GET['action']) {
         case 'viewcount':
             getViewCount();
+            break;
         default:
             http_response_code(510);
             echo json_encode([
