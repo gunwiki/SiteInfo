@@ -12,7 +12,7 @@ class AnalysisSiteAccessLog
 
     const NEEDLE = [
         '/wiki',
-        '/w/index.php',
+        '/w/index.php?title=',
     ];
 
     /**
@@ -39,6 +39,10 @@ class AnalysisSiteAccessLog
             }
             $url = $view->getURL();
             if ($this->matchURL($url)) {
+                // 过滤所有非200状态码的请求
+                if ($view->getHttpCode() !== 200) {
+                    continue;
+                }
                 $date = date('Y-m-d', $view->getTime());
                 $this->hit($hit, $date, $view->getIP());
             }
