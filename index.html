@@ -1,1 +1,81 @@
-走人，告辞！
+<!DOCTYPE HTML>
+<html lang="zh-cn">
+	<head>
+		<title>SiteInfo</title>
+		<meta charset="utf-8" />
+		<link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css" />
+		<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.1.0/css/bootstrap.min.css" />
+		<script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+		<script src="https://cdn.staticfile.org/popper.js/1.12.5/umd/popper.min.js"></script>
+		<script src="https://cdn.staticfile.org/twitter-bootstrap/4.1.0/js/bootstrap.min.js"></script>
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+		<link href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,600,400italic,700' rel='stylesheet' type='text/css' />
+		<link rel="stylesheet" href="https://www.natfrp.org/css/icomoon.css" />
+		<link rel="stylesheet" href="http://www.bootcss.com/p/buttons/css/buttons.css" />
+		<script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
+		<script src="https://unpkg.com/vue/dist/vue.js"></script>
+		<!--[if lt IE 9]>
+			<script src="//cdn.staticfile.org/jquery/1.9.1/jquery.min.js"></script>
+			<script src="//cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+		<![endif]-->
+	</head>
+	<body>
+		<div class="container">
+			<div class="card bg-primary text-white">
+				<div class="card-header">
+					WebInfo
+				</div>
+				<div class="card-body">
+					<table class="table table-bordered table-hover table-condensed">
+						<thead>
+							<tr>
+								<th>
+									Time
+								</th>
+								<th>
+									Counts
+								</th>
+							</tr>
+						</thead>
+						<tbody id="forjs">
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		<script>
+			function start(){
+				URL = "https://huoqibaike.club/info/api.php?action=viewcount";
+				obj = $.ajax({url:URL,async:false});
+				a = obj.responseText;
+				b = JSON.parse(a);
+				c = b.ViewCount;
+				key = getKeys(c);
+				value = getValues(c);
+				keys = key.toString();
+				values = value.toString();
+				keyss = keys.split(',');
+				valuess = values.split(',');
+				for(j in keyss) {
+   					document.getElementById("forjs").innerHTML+="<tr><td>" + keyss[j] + "</td><td>" + valuess[j].toString() + "</td></tr>";
+   				}
+			}
+			function getKeys(object){
+				var keys = [];
+				for (var property in object){
+					keys.push(property);
+				}
+				return keys;
+			}
+			function getValues(object){
+				var values = [];
+				for (var property in object){
+					values.push(object[property]);
+				}
+				return values;
+			}
+			console.log("前端没几把技术。");
+			start();
+		</script>
+	</body>
+</html>
