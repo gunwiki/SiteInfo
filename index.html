@@ -63,7 +63,7 @@
 			function start(){
 				wdnmd = "";
 				$('#forjs').html(wdnmd);
-				URL = "https://huoqibaike.club/info/api.php?action=viewcount";
+				URL = "/info/api.php?action=viewcount";
 				obj = $.ajax({url:URL,async:false});
 				a = obj.responseText;
 				b = JSON.parse(a);
