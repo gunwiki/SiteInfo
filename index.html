@@ -23,21 +23,33 @@
 		<div class="container">
 			<div class="card bg-primary text-white">
 				<div class="card-header">
-					WebInfo
+					网站信息 - <a onclick="re()">获得新数据</a>
 				</div>
 				<div class="card-body">
 					<table class="table table-bordered table-hover table-condensed">
 						<thead>
 							<tr>
 								<th>
-									Time
+									时间
 								</th>
 								<th>
-									Counts
+									访问量
 								</th>
 							</tr>
 						</thead>
 						<tbody id="forjs">
+						</tbody>
+					</table>
+					<p style="height: 3px;"></p>
+					<table class="table table-bordered table-hover table-condensed">
+						<thead>
+							<tr>
+								<th>
+									缓冲池命中率
+								</th>
+							</tr>
+						</thead>
+						<tbody id="forjss">
 						</tbody>
 					</table>
 				</div>
@@ -57,8 +69,15 @@
 				keyss = keys.split(',');
 				valuess = values.split(',');
 				for(j in keyss) {
-   					document.getElementById("forjs").innerHTML+="<tr><td>" + keyss[j] + "</td><td>" + valuess[j].toString() + "</td></tr>";
-   				}
+					document.getElementById("forjs").innerHTML+="<tr><td>" + keyss[j] + "</td><td>" + valuess[j].toString() + "</td></tr>";
+				}
+				URLS = "https://huoqibaike.club/info/api.php?action=innodbinfo";
+				objs = $.ajax({url:URLS,async:false});
+				o = objs.responseText;
+				q = JSON.parse(o);
+				u = q.InnoDBBufferHitRate;
+				k = u.toString();
+				document.getElementById("forjss").innerHTML="<tr><td>" + k + "</td></tr>";
 			}
 			function getKeys(object){
 				var keys = [];
@@ -73,6 +92,9 @@
 					values.push(object[property]);
 				}
 				return values;
+			}
+			function re(){
+				location.reload();
 			}
 			console.log("前端没几把技术。");
 			start();
