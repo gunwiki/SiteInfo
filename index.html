@@ -35,6 +35,9 @@
 								<th>
 									访问量
 								</th>
+								<th>
+									真实的访问量
+								</th>
 							</tr>
 						</thead>
 						<tbody id="forjs">
@@ -64,12 +67,18 @@
 				c = b.ViewCount;
 				key = getKeys(c);
 				value = getValues(c);
+				xxx = JSON.stringify(value);
+				zzz = JSON.parse(xxx);
+				ip = [];
+				co = [];
+				for(gbb in zzz) {
+					ip.push(zzz[gbb].viewcount);
+					co.push(zzz[gbb].ipcount);
+				}
 				keys = key.toString();
-				values = value.toString();
 				keyss = keys.split(',');
-				valuess = values.split(',');
 				for(j in keyss) {
-					document.getElementById("forjs").innerHTML+="<tr><td>" + keyss[j] + "</td><td>" + valuess[j].toString() + "</td></tr>";
+					document.getElementById("forjs").innerHTML+="<tr><td>" + keyss[j] + "</td><td>" + ip[j].toString() + "</td><td>" + co[j].toString() + "</td></tr>";
 				}
 				URLS = "https://huoqibaike.club/info/api.php?action=innodbinfo";
 				objs = $.ajax({url:URLS,async:false});
