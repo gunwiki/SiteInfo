@@ -59,7 +59,10 @@
 			</div>
 		</div>
 		<script>
+			var csdsa
 			function start(){
+				wdnmd = "";
+				$('#forjs').html(wdnmd);
 				URL = "https://huoqibaike.club/info/api.php?action=viewcount";
 				obj = $.ajax({url:URL,async:false});
 				a = obj.responseText;
@@ -78,8 +81,10 @@
 				keys = key.toString();
 				keyss = keys.split(',');
 				for(j in keyss) {
-					document.getElementById("forjs").innerHTML+="<tr><td>" + keyss[j] + "</td><td>" + ip[j].toString() + "</td><td>" + co[j].toString() + "</td></tr>";
+					wdnmd += "<tr><td>" + keyss[j] + "</td><td>" + ip[j].toString() + "</td><td>" + co[j].toString() + "</td></tr>";
+					$('#forjs').html(wdnmd);
 				}
+				obj.abort();
 				URLS = "https://huoqibaike.club/info/api.php?action=innodbinfo";
 				objs = $.ajax({url:URLS,async:false});
 				o = objs.responseText;
@@ -87,6 +92,8 @@
 				u = q.InnoDBBufferHitRate;
 				k = u.toString();
 				document.getElementById("forjss").innerHTML="<tr><td>" + k + "</td></tr>";
+				objs.abort();
+				csdsa = setTimeout("start()",1000);
 			}
 			function getKeys(object){
 				var keys = [];
