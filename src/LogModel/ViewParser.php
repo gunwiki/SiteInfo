@@ -38,7 +38,6 @@ class ViewParser
         $result->setHttpMethod($matches['method']);
         $result->setSize($matches['size']);
         $result->setURL($matches['URL']);
-        $result->setRefer($matches['refer']);
         $result->setRefer($matches['refer'] ?? null);
         $result->setUA($matches['UA'] ?? null);
         $this->result = $result;
