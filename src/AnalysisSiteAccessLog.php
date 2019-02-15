@@ -40,7 +40,7 @@ class AnalysisSiteAccessLog
             $url = $view->getURL();
             if ($this->matchURL($url)) {
                 $date = date('Y-m-d', $view->getTime());
-                $this->hit($hit, $date);
+                $this->hit($hit, $date, $view->getIP());
             }
         }
         return $hit;
@@ -56,12 +56,33 @@ class AnalysisSiteAccessLog
         return false;
     }
 
-    private function hit(array &$hit, string $date)
+    private function hit(array &$hit, string $date, string $ip)
     {
-        if (isset($hit[$date])) {
-            $hit[$date]++;
+        static $tmpDate;
+        static $ips;
+        $canPlus = false;
+        if ($tmpDate === $date) {
+            if (!isset($ips[$ip])) {
+                $canPlus = true;
+                $ips[$ip] = true;
+            }
         } else {
-            $hit[$date] = 1;
+            $tmpDate = $date;
+            $ips = null;
+            $ips[$ip] = true;
+            $canPlus = true;
+        }
+        if (isset($hit[$date])) {
+            $hit[$date]['viewcount']++;
+            if ($canPlus) {
+                $hit[$date]['ipcount']++;
+            }
+        } else {
+            $hit[$date] = [
+                'viewcount' => 1,
+                'ipcount' => 1
+            ];
         }
     }
 }
+
