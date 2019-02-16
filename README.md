@@ -1,13 +1,13 @@
 # SiteInfo
 查看网站信息。
 ## 它能够做什么
-SiteInfo工具采用PHP编写而成，该工具将会访问API.PHP来获取网站的客流量和InnoDB缓冲池命中率并输出。
+SiteInfo 工具采用 PHP 编写而成，该工具将会访问 api.php 来获取网站的客流量和 InnoDB 缓冲池命中率并输出。
 ## 它的特性
 * 在短时间内解析日志，获取流量和命中率。
 * 使用 PHP 搭建，提供美观的页面。
 * 所有信息将会以 JSON 格式返回。
 ## API接口
-Api.php 只允许用户使用 GET 方式获取数据。
+api.php 只允许用户使用 GET 方式获取数据。
 ### 客流量信息
 URL: `api?action=viewcount`
 
