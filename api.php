@@ -5,7 +5,6 @@
  * @file
  */
 
-require 'config.php';
 require __DIR__ . '/vendor/autoload.php';
 
 if (isset($_GET['action'])) {
@@ -34,15 +33,11 @@ function routeRequest(array $request) : array
         $action = explode('|', $request['action']);
     }
     foreach ($action as $item) {
-        switch ($item) {
-            case 'viewcount':
-                $data += getViewCount();
-                break;
-            case 'innodbinfo':
-                $data += getInnoDBBufferHitRate();
-                break;
-            default:
-                $data['error'][$item] = 'Unsupported action';
+        try {
+            $action = GunWiki\SiteInfo\API\APIFactory::make($item);
+            $data += $action->exec();
+        } catch (\LogicException $e) {
+            $data['error'][$item] = 'Unsupported action';
         }
     }
     return $data;
@@ -59,22 +54,3 @@ function sendResponse(array $data, int $httpStatusCode = 200) : void
     echo json_encode($data);
     die;
 }
-
-function getViewCount() : array
-{
-    global $cfgAccessLogPath;
-    $file = new SplFileObject($cfgAccessLogPath, 'r');
-    $app = new GunWiki\SiteInfo\AnalysisSiteAccessLog($file);
-    $res['ViewCount'] = $app->run();
-    return $res;
-}
-
-function getInnoDBBufferHitRate() : array
-{
-    global $cfgDBHost, $cfgDBUsername, $cfgDBPassword;
-    $app = new GunWiki\SiteInfo\InnoDBBufferHitRate($cfgDBHost, $cfgDBUsername, $cfgDBPassword);
-    return [
-        'InnoDBBufferHitRate' => $app->get(),
-    ];
-}
-

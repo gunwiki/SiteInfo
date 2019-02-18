@@ -1,34 +1,26 @@
 <?php
 
-namespace GunWiki\SiteInfo;
+namespace GunWiki\SiteInfo\API;
 
+use GunWiki\SiteInfo\Config;
 use GunWiki\SiteInfo\LogModel\ViewParser;
 
-class AnalysisSiteAccessLog
+class ViewCount implements IAPI
 {
     const PATTERN = '#^(?<IP>([0-9]{1,3}\.){3}[0-9]{1,3})\s-\s-\s\[(?<time>[0-9]{1,2}/\w*/[0-9]{4}:[0-9]{2}:[0-9]{2}:'.
-        '[0-9]{2}\s\+[0-9]{4})\]\s"(?<method>[A-Z]{3,4})\s(?<URL>.*)\s(?<version>HTTP/[0-9]\.[0-9])"\s'.
-        '(?<statusCode>[0-9]{3})\s(?<size>[0-9]*)(\s(?<refer>".*")\s(?<UA>".*")$)?#';
+    '[0-9]{2}\s\+[0-9]{4})\]\s"(?<method>[A-Z]{3,4})\s(?<URL>.*)\s(?<version>HTTP/[0-9]\.[0-9])"\s'.
+    '(?<statusCode>[0-9]{3})\s(?<size>[0-9]*)(\s(?<refer>".*")\s(?<UA>".*")$)?#';
 
     const NEEDLE = [
         '/wiki',
         '/w/index.php?title=',
     ];
 
-    /**
-     * @var \SplFileObject
-     */
-    private $file;
-
-    public function __construct(\SplFileObject $file)
+    public function exec(): array
     {
-        $this->file = $file;
-    }
-
-    public function run()
-    {
+        $file = new \SplFileObject(Config::getInstance()->get('AccessLogPath'));
         $hit = [];
-        foreach ($this->file as $line) {
+        foreach ($file as $line) {
             if (empty($line)) {
                 continue;
             }
@@ -47,7 +39,7 @@ class AnalysisSiteAccessLog
                 $this->hit($hit, $date, $view->getIP());
             }
         }
-        return $hit;
+        return ['ViewCount' => $hit];
     }
 
     private function matchURL(string $url) : bool
@@ -89,4 +81,3 @@ class AnalysisSiteAccessLog
         }
     }
 }
-
