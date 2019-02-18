@@ -1,4 +1,8 @@
 {
+  "require": {
+    "php": ">7.0.0",
+    "ext-json": "*"
+  },
   "autoload": {
     "psr-4": {
       "GunWiki\\SiteInfo\\": "src/"
