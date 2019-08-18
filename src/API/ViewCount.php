@@ -2,11 +2,14 @@
 
 namespace GunWiki\SiteInfo\API;
 
+use GunWiki\SiteInfo\Cache\CacheFactory;
 use GunWiki\SiteInfo\Config;
 use GunWiki\SiteInfo\LogModel\ViewParser;
 
 class ViewCount implements IAPI
 {
+    private const CACHE_PATH = __DIR__ . '/../../cache/main.cache';
+
     const PATTERN = '#^(?<IP>([0-9]{1,3}\.){3}[0-9]{1,3})\s-\s-\s\[(?<time>[0-9]{1,2}/\w*/[0-9]{4}:[0-9]{2}:[0-9]{2}:'.
     '[0-9]{2}\s\+[0-9]{4})\]\s"(?<method>[A-Z]{3,4})\s(?<URL>.*)\s(?<version>HTTP/[0-9]\.[0-9])"\s'.
     '(?<statusCode>[0-9]{3})\s(?<size>[0-9]*)(\s(?<refer>".*")\s(?<UA>".*")$)?#';
@@ -16,8 +19,14 @@ class ViewCount implements IAPI
         '/w/index.php?title=',
     ];
 
-    public function exec(): array
+    public function exec() : array
     {
+        $cache = CacheFactory::getInstance()->getLocalCache(self::CACHE_PATH);
+        if ($cache->has('viewcount')) {
+            if (time() - $cache->get('viewcount-time') < 60 * 30) {
+                return json_decode($cache->get('viewcount'), true);
+            }
+        }
         $file = new \SplFileObject(Config::getInstance()->get('AccessLogPath'));
         $hit = [];
         foreach ($file as $line) {
@@ -39,6 +48,8 @@ class ViewCount implements IAPI
                 $this->hit($hit, $date, $view->getIP());
             }
         }
+        $cache->set('viewcount', json_encode(['ViewCount' => $hit]));
+        $cache->set('viewcount-time', time());
         return ['ViewCount' => $hit];
     }
 
